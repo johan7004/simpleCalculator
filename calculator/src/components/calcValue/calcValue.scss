@@ -1,0 +1,43 @@
+.calcButtons{
+
+    &__container{
+        
+        display:flex;
+
+    }
+
+    &__numbers{
+
+        display:flex;
+        flex-direction:row;
+        margin:10px;
+        flex-wrap:wrap;
+        &-digits{
+            flex:1 0 25%;
+            margin:5px;
+            border:none;
+            background-color:black;
+            color:white;
+            height:50px;
+            
+           
+            
+
+        }
+    }
+
+    &__operation{
+        display:flex;
+        flex-direction:row;
+        margin:10px;
+        flex-wrap:wrap;
+
+        &-operators{
+            flex:1 0 30%;
+            margin:5px;
+            
+        }
+    }
+
+
+}

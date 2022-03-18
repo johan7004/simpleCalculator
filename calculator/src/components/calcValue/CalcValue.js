@@ -1,5 +1,6 @@
 import {React, useEffect, useState} from 'react';
 import CalcDisplay from '../calcDisplay/CalcDisplay';
+import './calcValue.css'
 
 export default function CalcValue() {
 
@@ -15,7 +16,7 @@ export default function CalcValue() {
         for(let i=1; i<10; i++){
 
             
-                numbers.push(<button key={i} className="calcButton__numbers-digits" onClick={calcValue}>{i}</button>)
+                numbers.push(<button key={i} className="calcButtons__numbers-digits" onClick={calcValue}>{i}</button>)
             
 
         }
@@ -35,9 +36,7 @@ export default function CalcValue() {
         
     }
 
-    const resetCalc=()=>{
-      setValue("")
-    }
+  
 
     useEffect(()=>{
 
@@ -48,6 +47,14 @@ export default function CalcValue() {
         setEvalValue(eval(value))
       }
     })
+
+    const calcEqual=()=>{
+      console.log(evalValue)
+      setValue(`${evalValue}`)
+    }
+    const resetCalc=()=>{
+      setValue("")
+    }
 
 
     
@@ -60,16 +67,17 @@ export default function CalcValue() {
       />
     <div className="calcButtons__container">
     <div className="calcButtons__numbers">
-    <button className="calcButton__numbers-digits" onClick={calcValue}>0</button>
+    <button className="calcButtons__numbers-digits" onClick={calcValue}>0</button>
     {numGenerator()}
 
     
     </div>
-    <div className="calcButtons__opertation">
+    <div className="calcButtons__operation">
     <button className="calcButtons__operation-operators" onClick={calcValue}>+</button>
     <button className="calcButtons__operation-operators" onClick={calcValue}>-</button>
     <button className="calcButtons__operation-operators" onClick={calcValue}>*</button>
     <button className="calcButtons__operation-operators" onClick={calcValue}>/</button>
+    <button className="calcButtons__operation-operators" onClick={calcEqual}>=</button>
     <button className="calcButtons__operation-operators" onClick={resetCalc}>CE</button>
     </div>
     </div>

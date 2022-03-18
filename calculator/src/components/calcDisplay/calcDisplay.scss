@@ -1,14 +1,28 @@
 .calcDisplay__container{
+    display:flex;
+    justify-content:center;
 
     form{
         display:flex;
-    flex-direction:column;
+        flex-direction:column;
+        border: 1px solid black;
+        margin:15px;
+        width:100%;
     
     }
 
-    input{
+    .calcDisplay__output{
         border:none;
         text-align:right;
+        height:25px;
+
+        &--result{
+            background-color: rgba(214, 213, 213, 0.541);
+            color:rgb(156, 109, 109);
+            text-align:right;
+            border:none;
+            height: 25px;
+        }
     }
 
 }
