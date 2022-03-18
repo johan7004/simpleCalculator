@@ -4,7 +4,7 @@ import CalcDisplay from '../calcDisplay/CalcDisplay';
 export default function CalcValue() {
 
   const [value, setValue]=useState("");
-  const [evalValue, setEvalValue]= useState(null);
+  const [evalValue, setEvalValue]= useState("");
 
 
 
@@ -28,15 +28,24 @@ export default function CalcValue() {
     const calcValue =(e)=>{
 
         let numberPressed = e.target.innerHTML;
-
-        setValue((prevValue) => prevValue + numberPressed );
         
+    
+          setValue((prevValue) => prevValue + numberPressed );
+        
+        
+    }
+
+    const resetCalc=()=>{
+      setValue("")
     }
 
     useEffect(()=>{
 
-      if(value){
-        console.log(value)
+      if(value.endsWith('+')||value.endsWith('-')||value.endsWith('/')||value.endsWith('*')){
+        console.log(`syntax Error`)
+      }else{
+        console.log(eval(value))
+        setEvalValue(eval(value))
       }
     })
 
@@ -47,6 +56,7 @@ export default function CalcValue() {
       <div>
       <CalcDisplay
       displayValue={value}
+      result={evalValue}
       />
     <div className="calcButtons__container">
     <div className="calcButtons__numbers">
@@ -60,6 +70,7 @@ export default function CalcValue() {
     <button className="calcButtons__operation-operators" onClick={calcValue}>-</button>
     <button className="calcButtons__operation-operators" onClick={calcValue}>*</button>
     <button className="calcButtons__operation-operators" onClick={calcValue}>/</button>
+    <button className="calcButtons__operation-operators" onClick={resetCalc}>CE</button>
     </div>
     </div>
     </div>

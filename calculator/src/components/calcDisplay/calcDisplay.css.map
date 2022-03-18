@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAEI,uBAFmB,CAEnB,IAAI,CAAA;EACA,OAAO,EAAC,IAAI;EAChB,cAAc,EAAC,MAAM;CAEpB;;AANL,AAQI,uBARmB,CAQnB,KAAK,CAAA;EACD,MAAM,EAAC,IAAI;EACX,UAAU,EAAC,KAAK;CACnB",
+    "sources": [
+        "calcDisplay.scss"
+    ],
+    "names": [],
+    "file": "calcDisplay.css"
+}
