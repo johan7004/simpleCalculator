@@ -1,86 +1,69 @@
-import {React, useEffect, useState} from 'react';
-import CalcDisplay from '../calcDisplay/CalcDisplay';
-import './calcValue.css'
+import { React, useEffect, useState, useReducer } from "react";
+import CalcDisplay from "../calcDisplay/CalcDisplay";
+import "./calcValue.css";
 
 export default function CalcValue() {
+  const [value, setValue] = useState([0])
+  const [evalValue, setEvalValue] = useState("");
 
-  const [value, setValue]=useState("");
-  const [evalValue, setEvalValue]= useState("");
+  let numbers = [];
+
+  for (let i = 1; i < 10; i++) {
+    numbers.push(i);
+  }
+
+  function init(){}
 
 
+ const initialValue = value
 
-    const numGenerator =()=>{
-
-        let numbers=[];
-
-        for(let i=1; i<10; i++){
-
-            
-                numbers.push(<button key={i} className="calcButtons__numbers-digits" onClick={calcValue}>{i}</button>)
-            
-
-        }
-        
-
-        return numbers;
-
+  function reducer(state, action) {
+    console.log(state)
+    switch (action.type) {
+      case "increment":
+        return state + 1 ;
+      case "decrement":
+        return  state - 1;
+      default:
+        throw new Error();
     }
+  }
 
-    const calcValue =(e)=>{
-
-        let numberPressed = e.target.innerHTML;
-        
-    
-          setValue((prevValue) => prevValue + numberPressed );
-        
-        
-    }
-
-  
-
-    useEffect(()=>{
-
-      if(value.endsWith('+')||value.endsWith('-')||value.endsWith('/')||value.endsWith('*')){
-        console.log(`syntax Error`)
-      }else{
-        console.log(eval(value))
-        setEvalValue(eval(value))
-      }
-    })
-
-    const calcEqual=()=>{
-      console.log(evalValue)
-      setValue(`${evalValue}`)
-    }
-    const resetCalc=()=>{
-      setValue("")
-    }
+  const [state, dispatch] = useReducer(reducer, initialValue, init);
 
 
-    
 
   return (
-      <div>
-      <CalcDisplay
-      displayValue={value}
-      result={evalValue}
-      />
-    <div className="calcButtons__container">
-    <div className="calcButtons__numbers">
-    <button className="calcButtons__numbers-digits" onClick={calcValue}>0</button>
-    {numGenerator()}
-
-    
+    <div>
+       Count: {state}
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <CalcDisplay displayValue={value} result={evalValue} />
+      <div className="calcButtons__container">
+        <div className="calcButtons__numbers">
+          <button className="calcButtons__numbers-digits">0</button>
+          {numbers.map((number) => {
+            return (
+              <button
+                key={number}
+                className="calcButtons__numbers-digits"
+                onClick={(e)=> setValue(value => value,Number(e.target.innerText))}
+              
+              >
+                {number}
+              </button>
+            );
+          })}
+        </div>
+        <div className="calcButtons__operation">
+          <button className="calcButtons__operation-operators" onClick={() => dispatch({ type: "increment" })}>+</button>
+          <button className="calcButtons__operation-operators"onClick={() => dispatch({ type: "decrement" })}>-</button>
+          <button className="calcButtons__operation-operators">*</button>
+          <button className="calcButtons__operation-operators">/</button>
+          <button className="calcButtons__operation-operators"onClick={() => dispatch({ type: "increment" })}>=</button>
+          <button className="calcButtons__operation-operators">CE</button>
+        </div>
+      </div>
     </div>
-    <div className="calcButtons__operation">
-    <button className="calcButtons__operation-operators" onClick={calcValue}>+</button>
-    <button className="calcButtons__operation-operators" onClick={calcValue}>-</button>
-    <button className="calcButtons__operation-operators" onClick={calcValue}>*</button>
-    <button className="calcButtons__operation-operators" onClick={calcValue}>/</button>
-    <button className="calcButtons__operation-operators" onClick={calcEqual}>=</button>
-    <button className="calcButtons__operation-operators" onClick={resetCalc}>CE</button>
-    </div>
-    </div>
-    </div>
-  )
+  );
 }
