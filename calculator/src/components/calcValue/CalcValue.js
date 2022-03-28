@@ -1,10 +1,43 @@
-import { React, useEffect, useState, useReducer } from "react";
+import { React, useState, useReducer } from "react";
 import CalcDisplay from "../calcDisplay/CalcDisplay";
 import "./calcValue.css";
 
+let initialState = 0;
+
+function reducer(state, action) {
+  let operandValues = null;
+  if (/[+-/*]$/.test(action.payload)) {
+    console.log(`pass `);
+    operandValues = action.payload * 0;
+  } else {
+    console.log(`error`);
+
+    operandValues = action.payload;
+  }
+
+  switch (action.type) {
+    case "CALC":
+      // eslint-disable-next-line no-eval
+      return eval(operandValues);
+
+    case "RESET":
+      return initialState;
+    default:
+      return state;
+  }
+}
 export default function CalcValue() {
-  const [value, setValue] = useState([0])
-  const [evalValue, setEvalValue] = useState("");
+  const [operands, setOperands] = useState(" ");
+  const [value, dispatch] = useReducer(reducer, initialState);
+
+  function changeValue(e) {
+    e.preventDefault();
+    const pressedNum = e.target.innerText;
+    setOperands((operands) => operands + pressedNum);
+    if (pressedNum === "CE") {
+      setOperands("");
+    }
+  }
 
   let numbers = [];
 
@@ -12,43 +45,23 @@ export default function CalcValue() {
     numbers.push(i);
   }
 
-  function init(){}
-
-
- const initialValue = value
-
-  function reducer(state, action) {
-    console.log(state)
-    switch (action.type) {
-      case "increment":
-        return state + 1 ;
-      case "decrement":
-        return  state - 1;
-      default:
-        throw new Error();
-    }
-  }
-
-  const [state, dispatch] = useReducer(reducer, initialValue, init);
-
-
-
   return (
     <div>
-       Count: {state}
-      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
-      <button onClick={() => dispatch({ type: "increment" })}>+</button>
-      <CalcDisplay displayValue={value} result={evalValue} />
+      <CalcDisplay displayValue={operands} displayResult={value} />
       <div className="calcButtons__container">
         <div className="calcButtons__numbers">
-          <button className="calcButtons__numbers-digits">0</button>
-          {numbers.map((number) => {
+          <button
+            className="calcButtons__numbers-digits"
+            onClick={(e) => changeValue(e)}
+          >
+            0
+          </button>
+          {numbers.map((number, i) => {
             return (
               <button
-                key={number}
+                key={i}
                 className="calcButtons__numbers-digits"
-                onClick={(e)=> setValue(value => value,Number(e.target.innerText))}
-              
+                onClick={changeValue}
               >
                 {number}
               </button>
@@ -56,12 +69,45 @@ export default function CalcValue() {
           })}
         </div>
         <div className="calcButtons__operation">
-          <button className="calcButtons__operation-operators" onClick={() => dispatch({ type: "increment" })}>+</button>
-          <button className="calcButtons__operation-operators"onClick={() => dispatch({ type: "decrement" })}>-</button>
-          <button className="calcButtons__operation-operators">*</button>
-          <button className="calcButtons__operation-operators">/</button>
-          <button className="calcButtons__operation-operators"onClick={() => dispatch({ type: "increment" })}>=</button>
-          <button className="calcButtons__operation-operators">CE</button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={(e) => changeValue(e)}
+          >
+            +
+          </button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={(e) => changeValue(e)}
+          >
+            -
+          </button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={(e) => changeValue(e)}
+          >
+            *
+          </button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={(e) => changeValue(e)}
+          >
+            /
+          </button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={() => dispatch({ type: "CALC", payload: operands })}
+          >
+            =
+          </button>
+          <button
+            className="calcButtons__operation-operators"
+            onClick={(e) => {
+              changeValue(e);
+              dispatch({ type: "RESET", payload: operands });
+            }}
+          >
+            CE
+          </button>
         </div>
       </div>
     </div>
